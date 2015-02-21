@@ -22,6 +22,7 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
     echo "Certificates found, enabling TLS."
     chmod 400 /etc/postfix/certs/*.*
 
+    postconf -e mydestination=localhost, mail.hashbang.sh, hashbang.sh
     postconf -e smtpd_tls_cert_file=$(find /etc/postfix/certs -iname *.crt)
     postconf -e smtpd_tls_key_file=$(find /etc/postfix/certs -iname *.key)
     postconf -e smtpd_tls_CAfile=$(find /etc/postfix/certs -iname *.pem)
