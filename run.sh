@@ -2,15 +2,18 @@
 
 postconf -e myhostname=$HOSTNAME
 postconf alias_maps=hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf
-postconf -e mydestination="localhost, mail.hashbang.sh, hashbang.sh"
+postconf -e relayhost="localhost, mail.hashbang.sh"
+postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 
 if [[ -n $LDAP_HOST ]]; then
 
     DC1=$( echo $LDAP_HOST | sed "s/[A-Za-z0-9-]\+\.\([A-Za-z0-9-]\+\)\.\([A-Za-z0-9-]\)\+/\1/g" )
     DC2=$( echo $LDAP_HOST | sed "s/[A-Za-z0-9-]\+\.\([A-Za-z0-9-]\+\)\.\([A-Za-z0-9-]\)\+/\2/g" )
-    cat >> /etc/postfix/ldap-aliases.cf <<EOF
+    cat >> /etc/postfix/ldap-transport.cf <<EOF
 server_host = $LDAP_HOST
-search_base = dc=$DC1, dc=$DC2
+search_base = ou=People,dc=$DC1,dc=$DC2
+query_filter = mailRoutingAddress=%s
+result_attribute = mailHost
 EOF
 
 fi
