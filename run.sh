@@ -5,7 +5,7 @@ postconf alias_maps=hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf
 postconf -e mydestination="localhost, mail.hashbang.sh, hashbang.sh"
 
 if [[ -n $LDAP_HOST ]]; then
-    cat >> /etc/postfix/ldap-transport.cf <<EOF
+    cat >> /etc/postfix/ldap-aliases.cf <<EOF
 server_host = ldap.hashbang.sh
 search_base = ou=People,dc=hashbang,dc=sh
 query_filter = mailRoutingAddress=%s
