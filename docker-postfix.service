@@ -1,0 +1,20 @@
+[Unit]
+Description=#! Postfix Server
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker pull hashbang/postfix
+ExecStartPre=-/usr/bin/docker kill postfix
+ExecStartPre=-/usr/bin/docker rm postfix
+ExecStart=/usr/bin/docker run \
+  -p 25:25 \
+  -v /home/core/postfix/certs:/etc/potfix/certs \
+  -e HOSTNAME="mail.hashbang.sh" \
+  -e LDAP_HOST="ldap.hashbang.sh" \
+  --name="postfix" \
+  hashbang/postfix
+
+[Install]
+WantedBy=multi-user.target
