@@ -3,7 +3,7 @@
 postconf -e myhostname=$HOSTNAME
 postconf alias_maps=hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf
 
-if [[ -z $LDAP_HOST ]]; then
+if [[ -n $LDAP_HOST ]]; then
 
     DC1=$( echo $LDAP_HOST | sed "s/[A-Za-z0-9-]\+\.\([A-Za-z0-9-]\+\)\.\([A-Za-z0-9-]\)\+/\1/g" )
     DC2=$( echo $LDAP_HOST | sed "s/[A-Za-z0-9-]\+\.\([A-Za-z0-9-]\+\)\.\([A-Za-z0-9-]\)\+/\2/g" )
