@@ -1,7 +1,18 @@
 #!/bin/bash
 
 postconf -e myhostname=$HOSTNAME
-postconf -F '*/*/chroot = n'
+postconf alias_maps=hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf
+
+if [[ -z $LDAP_HOST ]]; then
+
+    DC1=$( echo $LDAP_HOST | sed "s/[A-Za-z0-9-]\+\.\([A-Za-z0-9-]\+\)\.\([A-Za-z0-9-]\)\+/\1/g" )
+    DC2=$( echo $LDAP_HOST | sed "s/[A-Za-z0-9-]\+\.\([A-Za-z0-9-]\+\)\.\([A-Za-z0-9-]\)\+/\2/g" )
+    cat >> /etc/postfix/ldap-aliases.cf <<EOF
+server_host = $LDAP_HOST
+search_base = dc=$DC1, dc=$DC2
+EOF
+
+fi
 
 if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
       -n "$(find /etc/postfix/certs -iname *.key)" && \
