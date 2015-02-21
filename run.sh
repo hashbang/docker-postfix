@@ -2,15 +2,15 @@
 
 postconf -e myhostname=$HOSTNAME
 postconf alias_maps=hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf
-postconf -e mydestination="localhost, mail.hashbang.sh"
-postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
+postconf -e mydestination="localhost, mail.hashbang.sh, hashbang.sh"
 
 if [[ -n $LDAP_HOST ]]; then
     cat >> /etc/postfix/ldap-transport.cf <<EOF
-server_host = $LDAP_HOST
+server_host = ldap.hashbang.sh
 search_base = ou=People,dc=hashbang,dc=sh
 query_filter = mailRoutingAddress=%s
-result_attribute = mailHost
+result_attribute = host
+result_format = %U@%s
 EOF
 
 fi
