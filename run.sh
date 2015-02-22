@@ -1,16 +1,17 @@
 #!/bin/bash
 
 postconf -e myhostname=$HOSTNAME
-postconf alias_maps=hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf
-postconf -e mydestination="localhost, mail.hashbang.sh, hashbang.sh"
+postconf -e transport_maps="/etc/postfix/ldap-transport.cf"
+postconf -e relay_domains="hashbang.sh"
+postconf -e mydestination="localhost, mail.hashbang.sh"
 
 if [[ -n $LDAP_HOST ]]; then
-    cat >> /etc/postfix/ldap-aliases.cf <<EOF
+    cat >> /etc/postfix/ldap-transport <<EOF
 server_host = ldap.hashbang.sh
 search_base = ou=People,dc=hashbang,dc=sh
 query_filter = mailRoutingAddress=%s
 result_attribute = host
-result_format = %U@%s
+result_format = smtp:[%s]
 EOF
 
 fi
@@ -35,6 +36,8 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
     postconf -e smtp_tls_security_level=may
 fi
 
+ln /etc/services /var/spool/postfix/etc/services
+ln /etc/resolv.conf /var/spool/postfix/etc/resolv.conf
 /usr/sbin/postfix -v -c /etc/postfix start
 touch /var/log/mail.log
 tail -f /var/log/mail.*
