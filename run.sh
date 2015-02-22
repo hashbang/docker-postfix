@@ -1,7 +1,7 @@
 #!/bin/bash
 
 postconf -e myhostname=$HOSTNAME
-postconf -e transport_maps="/etc/postfix/ldap-transport.cf"
+postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 postconf -e relay_domains="hashbang.sh"
 postconf -e mydestination="localhost, mail.hashbang.sh"
 
@@ -37,7 +37,7 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
 fi
 
 ln /etc/services /var/spool/postfix/etc/services
-ln /etc/resolv.conf /var/spool/postfix/etc/resolv.conf
+cp /etc/resolv.conf /var/spool/postfix/etc/resolv.conf
 /usr/sbin/postfix -v -c /etc/postfix start
 touch /var/log/mail.log
 tail -f /var/log/mail.*
