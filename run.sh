@@ -17,7 +17,9 @@ EOF
 
     cat >> /etc/postfix/ldap-aliases.cf <<EOF
 server_host = ldap.hashbang.sh
-search_base = dc=hashbang,dc=sh
+search_base = ou=People,dc=hashbang,dc=sh
+query_filter = (&(objectclass=inetLocalMailRecipient)(mailLocalAddress=%s))
+result_attribute = mailRoutingAddress
 EOF
 
 fi
