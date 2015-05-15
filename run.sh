@@ -4,7 +4,6 @@ postconf -e myhostname=$HOSTNAME
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 postconf -e relay_domains="hashbang.sh"
 postconf -e virtual_alias_maps="ldap:/etc/postfix/ldap-aliases.cf"
-postconf -e virtual_alias_domains="hashbang.sh"
 postconf -e mydestination="localhost, mail.hashbang.sh"
 
 if [[ -n $LDAP_HOST ]]; then
