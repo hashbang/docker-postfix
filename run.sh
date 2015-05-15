@@ -2,6 +2,7 @@
 
 postconf -e myhostname=$HOSTNAME
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
+postconf -e alias_maps="ldap:/etc/postfix/ldap-aliases.cf"
 postconf -e relay_domains="hashbang.sh"
 postconf -e mydestination="localhost, mail.hashbang.sh"
 
@@ -12,6 +13,11 @@ search_base = ou=People,dc=hashbang,dc=sh
 query_filter = mailRoutingAddress=%s
 result_attribute = host
 result_format = smtp:[%s]
+EOF
+
+    cat >> /etc/postfix/ldap-aliases.cf <<EOF
+server_host = ldap.hashbang.sh
+search_base = dc=hashbang,dc=sh
 EOF
 
 fi
