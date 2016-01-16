@@ -3,7 +3,7 @@
 postconf -e myhostname=$HOSTNAME
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 postconf -e relay_domains="hashbang.sh"
-postconf -e mynetworks="hashbang.sh"
+postconf -e mynetworks="127.0.0.0/8 104.245.35.240 104.245.37.138 45.58.35.111 45.58.38.222"
 
 if [[ -n $LDAP_HOST ]]; then
     cat >> /etc/postfix/ldap-transport.cf <<EOF
