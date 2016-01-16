@@ -4,15 +4,27 @@ postconf -e myhostname=$HOSTNAME
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 postconf -e relay_domains="hashbang.sh"
 postconf -e mynetworks="127.0.0.0/8 104.245.35.240 104.245.37.138 45.58.35.111 45.58.38.222"
+postconf -e virtual_alias_maps="ldap:/etc/postfix/ldap-aliases.cf"
 
 if [[ -n $LDAP_HOST ]]; then
     cat >> /etc/postfix/ldap-transport.cf <<EOF
 server_host = $LDAP_HOST
 search_base = ou=People,dc=hashbang,dc=sh
-query_filter = mailRoutingAddress=%s
+domain = hashbang.sh
+query_filter = (&(objectclass=inetLocalMailRecipient)(uid=%U))
 result_attribute = host
 result_format = smtp:[%s]
 EOF
+
+    cat >> /etc/postfix/ldap-aliases.cf <<EOF
+server_host = ldap.hashbang.sh
+search_base = ou=People,dc=hashbang,dc=sh
+domain = hashbang.sh
+query_filter = (&(objectclass=inetLocalMailRecipient)(uid=%U))
+result_attribute = host
+result_format = %U@%s
+EOF
+
 fi
 
 if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
