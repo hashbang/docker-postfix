@@ -10,7 +10,7 @@ ExecStartPre=-/usr/bin/docker kill postfix
 ExecStartPre=-/usr/bin/docker rm postfix
 ExecStart=/usr/bin/docker run \
   -p 25:25 \
-  -v /home/core/postfix/certs:/etc/potfix/certs \
+  -v /home/core/postfix/certs:/etc/postfix/certs \
   -e HOSTNAME=mail.hashbang.sh \
   -e LDAP_HOST=ldap.hashbang.sh \
   --name="postfix" \
