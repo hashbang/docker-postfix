@@ -40,7 +40,7 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
     postconf -e smtpd_tls_loglevel=1
     postconf -e smtpd_tls_received_header=yes
     postconf -e smtpd_tls_session_cache_timeout=3600s
-    postconf -e smtp_tls_note_starttls_offer= yes
+    postconf -e smtp_tls_note_starttls_offer=yes
     postconf -e smtp_tls_security_level=may
 fi
 
