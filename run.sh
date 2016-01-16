@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -e
 
 postconf -e myhostname="$HOSTNAME"
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
@@ -6,7 +6,7 @@ postconf -e relay_domains="hashbang.sh"
 postconf -e mynetworks="127.0.0.0/8 104.245.35.240 104.245.37.138 45.58.35.111 45.58.38.222"
 postconf -e virtual_alias_maps="ldap:/etc/postfix/ldap-aliases.cf"
 
-if [[ -n $LDAP_HOST ]]; then
+if [ -n "$LDAP_HOST" ]; then
     cat >> /etc/postfix/ldap-transport.cf <<EOF
 server_host = $LDAP_HOST
 search_base = ou=People,dc=hashbang,dc=sh
@@ -27,13 +27,13 @@ EOF
 
 fi
 
-if [[ -n "$(find /etc/postfix/certs -iname '*.crt')" && \
-      -n "$(find /etc/postfix/certs -iname '*.key')" && \
-      -n "$(find /etc/postfix/certs -iname '*.pem')"
-   ]]; then
+if [ -n "$(find /etc/postfix/certs -iname '*.crt')" -a \
+     -n "$(find /etc/postfix/certs -iname '*.key')" -a \
+     -n "$(find /etc/postfix/certs -iname '*.pem')"    \
+   ]; then
 
     echo "Certificates found, enabling TLS."
-    chmod 400 /etc/postfix/certs/*.*
+    chmod 400 /etc/postfix/certs/*
 
     postconf -e smtpd_tls_cert_file="$(find /etc/postfix/certs -iname '*.crt')"
     postconf -e smtpd_tls_key_file="$(find /etc/postfix/certs -iname '*.key')"
@@ -49,12 +49,12 @@ if [[ -n "$(find /etc/postfix/certs -iname '*.crt')" && \
     postconf -e smtp_dns_support_level=dnssec
 
     postconf -e smtp_tls_note_starttls_offer=yes
-elif [[ -n $MUST_SSL ]]; then
+elif [ -n "$MUST_SSL" ]; then
     echo "SSL is required, but files missing" >2
     exit 1
 fi
 
-ln /etc/services /var/spool/postfix/etc/services
+ln /etc/services    /var/spool/postfix/etc/services
 cp /etc/resolv.conf /var/spool/postfix/etc/resolv.conf
 
 service rsyslog start
