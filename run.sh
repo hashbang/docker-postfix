@@ -31,8 +31,12 @@ if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
     postconf -e smtpd_tls_loglevel=1
     postconf -e smtpd_tls_received_header=yes
     postconf -e smtpd_tls_session_cache_timeout=3600s
+
+    # Enforce TLS if DANE record found
+    postconf -e smtp_tls_security_level=dane
+    postconf -e smtp_dns_support_level=dnssec
+
     postconf -e smtp_tls_note_starttls_offer=yes
-    postconf -e smtp_tls_security_level=may
 elif [[ -n $MUST_SSL ]]; then
     echo "SSL is required, but files missing" >2
     exit 1
