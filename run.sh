@@ -48,4 +48,4 @@ cp /etc/resolv.conf /var/spool/postfix/etc/resolv.conf
 service rsyslog start
 /usr/sbin/postfix -v -c /etc/postfix start
 
-tail -f /var/log/mail.*
+tail -f /var/log/mail.log
