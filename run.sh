@@ -3,7 +3,6 @@
 postconf -e myhostname=$HOSTNAME
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 postconf -e relay_domains="hashbang.sh"
-postconf -e virtual_alias_maps="ldap:/etc/postfix/ldap-aliases.cf"
 postconf -e mydestination="localhost, mail.hashbang.sh"
 
 if [[ -n $LDAP_HOST ]]; then
@@ -14,14 +13,6 @@ query_filter = mailRoutingAddress=%s
 result_attribute = host
 result_format = smtp:[%s]
 EOF
-
-    cat >> /etc/postfix/ldap-aliases.cf <<EOF
-server_host = ldap.hashbang.sh
-search_base = ou=People,dc=hashbang,dc=sh
-query_filter = (&(objectclass=inetLocalMailRecipient)(mailLocalAddress=%s))
-result_attribute = mailRoutingAddress
-EOF
-
 fi
 
 if [[ -n "$(find /etc/postfix/certs -iname *.crt)" && \
