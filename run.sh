@@ -58,6 +58,6 @@ ln /etc/services    /var/spool/postfix/etc/services
 cp /etc/resolv.conf /var/spool/postfix/etc/resolv.conf
 
 service rsyslog start
-/usr/sbin/postfix -v -c /etc/postfix start
+service postfix start
 
 tail -f /var/log/mail.log
