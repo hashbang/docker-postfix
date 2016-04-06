@@ -49,6 +49,9 @@ if [ -n "$(find /etc/postfix/certs -iname '*.crt')" -a \
     postconf -e smtp_dns_support_level=dnssec
 
     postconf -e smtp_tls_note_starttls_offer=yes
+
+    # Increase max. message size to 50 MiB
+    postconf -e message_size_limit=52428800
 elif [ -n "$MUST_SSL" ]; then
     echo "SSL is required, but files missing" >2
     exit 1
