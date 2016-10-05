@@ -27,23 +27,6 @@ EOF
 
 fi
 
-cat > /etc/aliases <<EOF
-mailer-daemon: postmaster
-postmaster: root
-nobody: root
-hostmaster: root
-usenet: root
-news: root
-webmaster: root
-www: root
-ftp: root
-abuse: root
-noc: root
-security: root
-root: team@hashbang.sh
-team: kellerfuchs@hashbang.sh groved@google.com david@tpflug.com quae@daurnimator.com lance@lrvick.net vandor2012@gmail.com connerbrooks@gmail.com
-EOF
-
 newaliases
 
 if [ -n "$(find /etc/postfix/certs -iname '*.crt')" -a \
