@@ -4,7 +4,7 @@ postconf -e myhostname="$HOSTNAME"
 postconf -e transport_maps="ldap:/etc/postfix/ldap-transport.cf"
 postconf -e relay_domains="hashbang.sh"
 postconf -e mynetworks="127.0.0.0/8 104.245.35.240 104.245.37.138 45.58.35.111 45.58.38.222"
-postconf -e virtual_alias_maps="ldap:/etc/postfix/ldap-aliases.cf"
+postconf -e virtual_alias_maps="hash:/etc/aliases,ldap:/etc/postfix/ldap-aliases.cf"
 
 if [ -n "$LDAP_HOST" ]; then
     cat >> /etc/postfix/ldap-transport.cf <<EOF
@@ -26,6 +26,25 @@ result_format = %U@%s
 EOF
 
 fi
+
+cat > /etc/aliases <<EOF
+mailer-daemon: postmaster
+postmaster: root
+nobody: root
+hostmaster: root
+usenet: root
+news: root
+webmaster: root
+www: root
+ftp: root
+abuse: root
+noc: root
+security: root
+root: team@hashbang.sh
+team@hashbang.sh: kellerfuchs@hashbang.sh groved@google.com david@tpflug.com quae@daurnimator.com lance@lrvick.net vandor2012@gmail.com connerbrooks@gmail.com
+EOF
+
+newaliases
 
 if [ -n "$(find /etc/postfix/certs -iname '*.crt')" -a \
      -n "$(find /etc/postfix/certs -iname '*.key')" -a \
