@@ -29,6 +29,7 @@ fi
 
 newaliases
 chown -R postfix: /etc/aliases.db
+chown -R postfix: /var/spool/postfix
 
 if [ -n "$(find /etc/postfix/certs -iname '*.crt')" -a \
      -n "$(find /etc/postfix/certs -iname '*.key')" -a \
