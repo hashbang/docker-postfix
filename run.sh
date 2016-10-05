@@ -1,11 +1,11 @@
-#!/bin/sh -e
+#!/bin/bash
 
 newaliases
 chown -R root: /etc/aliases
 chown -R root: /etc/aliases.db
 
 chown -R root:root /var/spool/postfix
-chown -R postfix:postdrop /var/spool/postfix/{deferred,active,incoming,bounce,defer,maildrop,public,flush,corrupt,private,saved}
+chown -R postfix:postdrop /var/spool/postfix/{deferred,active,incoming,bounce,defer,maildrop,public,flush,corrupt,private,saved,hold,trace}
 chown -R root:root /etc/postfix
 chmod 755 /etc/aliases.db
 
