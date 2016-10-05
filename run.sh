@@ -41,7 +41,7 @@ abuse: root
 noc: root
 security: root
 root: team@hashbang.sh
-team@hashbang.sh: kellerfuchs@hashbang.sh groved@google.com david@tpflug.com quae@daurnimator.com lance@lrvick.net vandor2012@gmail.com connerbrooks@gmail.com
+team: kellerfuchs@hashbang.sh groved@google.com david@tpflug.com quae@daurnimator.com lance@lrvick.net vandor2012@gmail.com connerbrooks@gmail.com
 EOF
 
 newaliases
