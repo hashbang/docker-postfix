@@ -10,6 +10,7 @@ RUN apt-get update && \
     rm -rf /tmp/* /var/tmp/*
 
 VOLUME /etc/postfix/certs
+VOLUME /var/spool/postfix
 
 ADD run.sh /
 
