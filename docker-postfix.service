@@ -6,7 +6,7 @@ Requires=docker.service
 [Service]
 Restart=always
 ExecStartPre=-/usr/bin/docker pull hashbang/postfix
-ExecStartPre=-/usr/bin/docker kill postfix
+ExecStartPre=-/usr/bin/docker stop postfix
 ExecStartPre=-/usr/bin/docker rm postfix
 ExecStart=/usr/bin/docker run \
   -p 25:25 \
@@ -16,6 +16,8 @@ ExecStart=/usr/bin/docker run \
   -e MUST_SSL=yes \
   --name="postfix" \
   hashbang/postfix
+
+ExecStop=/usr/bin/docker stop postfix
 
 [Install]
 WantedBy=multi-user.target
