@@ -10,7 +10,8 @@ ExecStartPre=-/usr/bin/docker stop postfix
 ExecStartPre=-/usr/bin/docker rm postfix
 ExecStart=/usr/bin/docker run \
   -p 25:25 \
-  -v /home/core/postfix/certs:/etc/postfix/certs \
+  -v /home/core/postfix/config:/etc/postfix \
+  -v /home/core/postfix/spool:/var/spool/postfix \
   -e HOSTNAME=mail.hashbang.sh \
   -e MUST_SSL=yes \
   --name=postfix \
